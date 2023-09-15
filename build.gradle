@@ -1,0 +1,48 @@
+plugins {
+    id 'java-library'
+    id "maven-publish"
+    id "maven"
+}
+
+group 'cn.mccraft.pangu'
+version '4.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/"}
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+}
+
+configurations {
+    embed
+}
+
+dependencies {
+    api "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    api "com.comphenix.protocol:ProtocolLib:4.4.0"
+    api "com.github.trychen:ByteDataStream:1.7"
+    api "com.github.Mouse0w0:FastReflection:1.0.1"
+
+    embed "com.github.trychen:ByteDataStream:1.6"
+    embed "com.github.Mouse0w0:FastReflection:1.0.1"
+}
+
+task embedJar(type: Jar) {
+    classifier "packaged"
+
+    from configurations.embed.collect { it.isDirectory() ? it : zipTree(it) }
+    with jar
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+artifacts {
+    archives embedJar
+}
+
