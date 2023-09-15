@@ -45,4 +45,3 @@ tasks.withType(JavaCompile) {
 artifacts {
     archives embedJar
 }
-
